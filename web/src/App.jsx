@@ -789,26 +789,33 @@ export default function App() {
       <main className="main-content">
         {/* Header Bar */}
         <header className="header-bar">
-          <select
-            className="model-selector"
-            value={model}
-            onChange={(e) => setModel(e.target.value)}
-            style={{
-              background: '#18181B',
-              border: '1px solid #27272A',
-              color: '#FFFFFF',
-              fontSize: '15px',
-              fontWeight: '600',
-              padding: '8px 16px',
-              borderRadius: '20px',
-              cursor: 'pointer',
-              outline: 'none'
-            }}
-          >
-            <option value="Singh AI 3">Singh AI 3</option>
-            <option value="Singh AI Flash">Singh AI Flash</option>
-            <option value="Singh AI Pro">Singh AI Pro</option>
-          </select>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <img
+              src="/logo.png"
+              alt="Singh AI Logo"
+              style={{ width: '32px', height: '32px', borderRadius: '8px', objectFit: 'cover', border: '1px solid #3F3F46' }}
+            />
+            <select
+              className="model-selector"
+              value={model}
+              onChange={(e) => setModel(e.target.value)}
+              style={{
+                background: '#18181B',
+                border: '1px solid #27272A',
+                color: '#FFFFFF',
+                fontSize: '15px',
+                fontWeight: '600',
+                padding: '8px 16px',
+                borderRadius: '20px',
+                cursor: 'pointer',
+                outline: 'none'
+              }}
+            >
+              <option value="Singh AI 3">Singh AI 3</option>
+              <option value="Singh AI Flash">Singh AI Flash</option>
+              <option value="Singh AI Pro">Singh AI Pro</option>
+            </select>
+          </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             <div className="status-badge">
               <div className="status-dot"></div>
