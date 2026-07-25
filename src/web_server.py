@@ -840,16 +840,15 @@ EMBEDDED_HTML_UI = """<!DOCTYPE html>
 
 
 def main():
-    port = 8000
+    port = int(os.environ.get("PORT", 8000))
     if len(sys.argv) > 1 and sys.argv[1] == "--test":
         print(f"Web server self-test successful.")
         return 0
 
-    server_address = ("", port)
+    server_address = ("0.0.0.0", port)
     httpd = HTTPServer(server_address, AgentRequestHandler)
     print(f"\n=======================================================")
-    print(f"[*] Claw Code AI Agent Web Interface Running!")
-    print(f"[*] Open in Browser: http://localhost:{port}")
+    print(f"[*] Singh AI Web Interface Running on port {port}!")
     print(f"=======================================================\n")
 
     try:
