@@ -1,0 +1,36 @@
+[
+  {
+    "id": "chat-rec-66868a",
+    "title": "hi",
+    "pinned": false,
+    "messages": [
+      {
+        "id": 1784974600999,
+        "role": "user",
+        "content": "hi"
+      },
+      {
+        "id": 1784974601000,
+        "role": "assistant",
+        "content": "Hello. I'm here to help with any coding-related questions or problems you might have. What programming language or topic would you like to discuss? Do you have a specific project in mind or need help with a particular issue? I'll do my best to provide clean, correct, and fully working code along with clear explanations. \n\nWhat can I assist you with today?"
+      }
+    ]
+  },
+  {
+    "id": "chat-rec-2",
+    "title": "Grok API Key Info",
+    "pinned": false,
+    "messages": [
+      {
+        "id": 3,
+        "role": "user",
+        "content": "Grok API Key Info"
+      },
+      {
+        "id": 4,
+        "role": "assistant",
+        "content": "Groq keys starting with `gsk_` route to Groq Cloud API, while xAI keys starting with `xai-` route to xAI Grok 3 API."
+      }
+    ]
+  }
+]
