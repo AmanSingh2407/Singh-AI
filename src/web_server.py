@@ -261,26 +261,44 @@ class AgentRequestHandler(BaseHTTPRequestHandler):
             self.wfile.write(json.dumps(data).encode("utf-8"))
             return
 
-        # Serve static web app files if web/dist exists, else send simple HTML app
+        # Serve static web app files if web/dist exists
         static_dir = ROOT_DIR / "web" / "dist"
+        if not (static_dir / "index.html").is_file():
+            try:
+                import subprocess
+                web_dir = ROOT_DIR / "web"
+                if web_dir.is_dir():
+                    subprocess.run(["npm", "run", "build"], cwd=web_dir, capture_output=True, timeout=60)
+            except Exception:
+                pass
+
         if path == "/" or path == "":
             file_path = static_dir / "index.html"
         else:
             file_path = static_dir / path.lstrip("/")
 
         if file_path.is_file():
+            ext = file_path.suffix.lower()
             content_type = "text/html"
-            if file_path.suffix == ".js": content_type = "application/javascript"
-            elif file_path.suffix == ".css": content_type = "text/css"
-            elif file_path.suffix == ".json": content_type = "application/json"
-            elif file_path.suffix == ".svg": content_type = "image/svg+xml"
+            if ext == ".js": content_type = "application/javascript"
+            elif ext == ".css": content_type = "text/css"
+            elif ext == ".json": content_type = "application/json"
+            elif ext == ".svg": content_type = "image/svg+xml"
+            elif ext in [".png", ".jpg", ".jpeg", ".ico"]: content_type = "image/png"
             
             self._set_headers(200, content_type)
             self.wfile.write(file_path.read_bytes())
+            return
+        elif (static_dir / "index.html").is_file():
+            # SPA fallback for client-side routing
+            self._set_headers(200, "text/html")
+            self.wfile.write((static_dir / "index.html").read_bytes())
+            return
         else:
             # Embedded Fallback UI HTML if dist isn't built yet
             self._set_headers(200, "text/html")
             self.wfile.write(EMBEDDED_HTML_UI.encode("utf-8"))
+            return
 
     def do_POST(self):
         parsed = urllib.parse.urlparse(self.path)
