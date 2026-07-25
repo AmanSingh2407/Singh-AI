@@ -165,6 +165,15 @@ class AgentRequestHandler(BaseHTTPRequestHandler):
         parsed = urllib.parse.urlparse(self.path)
         path = parsed.path
 
+        if path in ["/favicon.ico", "/favicon.svg", "/vite.svg", "/icons.svg"]:
+            fav = ROOT_DIR / "web" / "public" / "favicon.svg"
+            if not fav.is_file():
+                fav = ROOT_DIR / "web" / "dist" / "favicon.svg"
+            if fav.is_file():
+                self._set_headers(200, "image/svg+xml")
+                self.wfile.write(fav.read_bytes())
+                return
+
         if path == "/api/status":
             run_setup()
             api_key = os.environ.get("GROK_API_KEY") or os.environ.get("XAI_API_KEY") or os.environ.get("GROQ_API_KEY") or ""
