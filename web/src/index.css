@@ -856,6 +856,10 @@ pre {
   transition: background 0.12s ease;
 }
 
+.mobile-menu-btn {
+  display: none !important;
+}
+
 .popover-item:hover {
   background: #27272A;
   color: #FFF;
@@ -922,4 +926,153 @@ pre {
 .collapsed-avatar-circle:hover {
   transform: scale(1.08);
   box-shadow: 0 0 10px rgba(16, 185, 129, 0.4);
+}
+
+/* Pixel-Perfect Responsive Mobile View Settings */
+@media (max-width: 768px) {
+  body {
+    overflow-x: hidden;
+  }
+
+  .app-container {
+    flex-direction: column;
+    height: 100vh;
+    height: 100dvh;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* Mobile Backdrop Overlay */
+  .mobile-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px);
+    z-index: 998;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+  }
+
+  .mobile-backdrop.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* Mobile Sidebar as overlay Drawer */
+  .sidebar {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    bottom: 0 !important;
+    height: 100% !important;
+    z-index: 999 !important;
+    width: 280px !important;
+    min-width: 280px !important;
+    max-width: 280px !important;
+    background: #09090B !important;
+    border-right: 1px solid #1F1F23 !important;
+    transform: translateX(-100%) !important;
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    box-shadow: 8px 0 32px rgba(0, 0, 0, 0.8) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+  }
+
+  .sidebar.mobile-open {
+    transform: translateX(0) !important;
+  }
+
+  .sidebar.collapsed {
+    transform: translateX(-100%) !important;
+  }
+
+  /* Mobile Header Bar */
+  .mobile-menu-btn {
+    display: flex !important;
+  }
+
+  .header-bar {
+    padding: 10px 12px !important;
+    gap: 8px !important;
+    justify-content: space-between !important;
+    border-bottom: 1px solid #1F1F23 !important;
+  }
+
+  .header-bar .model-selector {
+    font-size: 13px !important;
+    padding: 6px 10px !important;
+  }
+
+  .header-bar .status-badge {
+    padding: 4px 8px !important;
+    font-size: 11px !important;
+  }
+
+  .header-bar .status-badge span {
+    max-width: 100px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* Main Content Area in Mobile View */
+  .main-content {
+    width: 100% !important;
+    min-width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+    flex: 1;
+    overflow-y: auto;
+  }
+
+  .hero-container {
+    padding: 24px 16px !important;
+    max-width: 100% !important;
+  }
+
+  .hero-title {
+    font-size: 24px !important;
+    line-height: 1.3 !important;
+    margin-bottom: 24px !important;
+  }
+
+  .prompt-bar {
+    padding: 10px 14px !important;
+    border-radius: 20px !important;
+  }
+
+  .prompt-input {
+    font-size: 14px !important;
+  }
+
+  .action-cards {
+    flex-direction: column !important;
+    gap: 10px !important;
+    margin-top: 20px !important;
+  }
+
+  .action-card {
+    width: 100% !important;
+    padding: 14px 16px !important;
+    font-size: 14px !important;
+    border-radius: 14px !important;
+  }
+
+  .chat-scroll-wrapper {
+    padding: 16px 12px !important;
+  }
+
+  .chat-container {
+    max-width: 100% !important;
+  }
+
+  .message-item {
+    font-size: 14px !important;
+    padding: 12px 14px !important;
+  }
 }

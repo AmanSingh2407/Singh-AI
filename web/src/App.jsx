@@ -17,6 +17,7 @@ export default function App() {
   
   // Sidebar & Profile State
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false)
+  const [isMobileOpen, setIsMobileOpen] = useState(false)
   const [showProfileModal, setShowProfileModal] = useState(false)
   const [userProfile, setUserProfile] = useState({ name: 'Aman', plan: 'Go', avatar: '' })
   const [editName, setEditName] = useState('Aman')
@@ -512,7 +513,7 @@ export default function App() {
       />
 
       {/* Sidebar (Left) */}
-      <aside className={`sidebar ${isSidebarCollapsed ? 'collapsed' : ''}`}>
+      <aside className={`sidebar ${isSidebarCollapsed ? 'collapsed' : ''} ${isMobileOpen ? 'mobile-open' : ''}`}>
         {isSidebarCollapsed ? (
           <>
             {/* Collapsed Rail Icons matching user screenshot */}
@@ -785,11 +786,25 @@ export default function App() {
         )}
       </aside>
 
+      {/* Mobile Backdrop Overlay */}
+      <div
+        className={`mobile-backdrop ${isMobileOpen ? 'active' : ''}`}
+        onClick={() => setIsMobileOpen(false)}
+      />
+
       {/* Main Content Area */}
       <main className="main-content">
         {/* Header Bar */}
         <header className="header-bar">
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <button
+              className="icon-btn mobile-menu-btn"
+              title="Toggle navigation menu"
+              onClick={() => setIsMobileOpen(!isMobileOpen)}
+              style={{ fontSize: '18px', padding: '4px 8px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+            >
+              ☰
+            </button>
             <img
               src="/logo.png"
               alt="Singh AI Logo"
