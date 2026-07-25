@@ -1,0 +1,2 @@
+# Python standard library dependencies
+urllib3
