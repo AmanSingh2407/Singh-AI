@@ -28,14 +28,13 @@ def query_grok(prompt: str, model: str | None = None, system_prompt: str | None 
         headers["X-Title"] = "Singh AI"
         
         model_map = {
-            "Singh AI 3": "meta-llama/llama-3.3-70b-instruct:free",
-            "Singh AI Flash": "google/gemini-2.0-flash-exp:free",
-            "Singh AI Pro": "deepseek/deepseek-r1:free",
-            "DeepSeek R1": "deepseek/deepseek-r1:free",
-            "Llama 3.3": "meta-llama/llama-3.3-70b-instruct:free",
-            "Gemini 2.0 Flash": "google/gemini-2.0-flash-exp:free",
+            "Singh AI 3": "meta-llama/llama-3.3-70b-instruct",
+            "Singh AI Flash": "google/gemini-2.0-flash-lite-preview-02-05:free",
+            "Singh AI Pro": "meta-llama/llama-3.3-70b-instruct",
+            "DeepSeek R1": "deepseek/deepseek-r1",
+            "Llama 3.3": "meta-llama/llama-3.3-70b-instruct",
         }
-        use_model = model_map.get(model, model or "meta-llama/llama-3.3-70b-instruct:free")
+        use_model = model_map.get(model, "meta-llama/llama-3.3-70b-instruct")
     elif api_key.startswith("gsk_"):
         url = "https://api.groq.com/openai/v1/chat/completions"
         use_model = model or "llama-3.3-70b-versatile"
