@@ -7,6 +7,11 @@ import urllib.request
 
 
 def query_grok(prompt: str, model: str | None = None, system_prompt: str | None = None) -> str:
+    from pathlib import Path
+    from .setup import load_env_file
+    root_dir = Path(__file__).resolve().parent.parent
+    load_env_file(root_dir)
+
     openrouter_key = (os.environ.get("OPENROUTER_API_KEY") or "").strip()
     grok_key = (os.environ.get("GROK_API_KEY") or os.environ.get("XAI_API_KEY") or os.environ.get("GROQ_API_KEY") or "").strip()
 
