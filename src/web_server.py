@@ -165,20 +165,33 @@ class AgentRequestHandler(BaseHTTPRequestHandler):
         parsed = urllib.parse.urlparse(self.path)
         path = parsed.path
 
-        if path in ["/favicon.ico", "/favicon.svg", "/vite.svg", "/icons.svg"]:
-            fav = ROOT_DIR / "web" / "public" / "favicon.svg"
-            if not fav.is_file():
-                fav = ROOT_DIR / "web" / "dist" / "favicon.svg"
-            if fav.is_file():
-                self._set_headers(200, "image/svg+xml")
-                self.wfile.write(fav.read_bytes())
+        if path in ["/favicon.ico", "/favicon.png", "/favicon.svg", "/logo.png", "/vite.svg", "/icons.svg"]:
+            logo_path = ROOT_DIR / "web" / "public" / "logo.png"
+            if not logo_path.is_file():
+                logo_path = ROOT_DIR / "web" / "dist" / "logo.png"
+            if logo_path.is_file():
+                self._set_headers(200, "image/png")
+                self.wfile.write(logo_path.read_bytes())
                 return
 
         if path == "/api/status":
             run_setup()
-            api_key = os.environ.get("GROK_API_KEY") or os.environ.get("XAI_API_KEY") or os.environ.get("GROQ_API_KEY") or ""
+            api_key = (
+                os.environ.get("OPENROUTER_API_KEY")
+                or os.environ.get("GROK_API_KEY")
+                or os.environ.get("XAI_API_KEY")
+                or os.environ.get("GROQ_API_KEY")
+                or ""
+            )
             key_preview = f"{api_key[:8]}...{api_key[-4:]}" if len(api_key) > 12 else ("Configured" if api_key else "Missing")
-            provider = "Groq (Llama-3.3-70B)" if api_key.startswith("gsk_") else ("xAI (Grok)" if api_key.startswith("xai-") else "Not configured")
+            if api_key.startswith("sk-or-v1-"):
+                provider = "OpenRouter (Universal AI)"
+            elif api_key.startswith("gsk_"):
+                provider = "Groq Cloud"
+            elif api_key.startswith("xai-"):
+                provider = "xAI (Grok)"
+            else:
+                provider = "Not configured"
             
             data = {
                 "status": "online",
