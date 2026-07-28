@@ -73,7 +73,7 @@ def load_env_file(root_dir: Path) -> None:
                     key, _, val = line.partition('=')
                     key = key.strip()
                     val = val.strip().strip('"').strip("'")
-                    if key and key not in os.environ:
+                    if key:
                         os.environ[key] = val
         except Exception:
             pass
