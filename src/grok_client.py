@@ -42,6 +42,8 @@ def query_grok(prompt: str, model: str | None = None, system_prompt: str | None 
             return resp_data["choices"][0]["message"]["content"]
     except urllib.error.HTTPError as e:
         body = e.read().decode("utf-8", errors="ignore")
+        if e.code in (401, 403):
+            return "⚠️ **Invalid or Expired API Key (HTTP 401/403)**\n\nYour API key is invalid, revoked, or expired.\n\n👉 **To fix this:**\n1. Get a free API key from [https://console.groq.com/keys](https://console.groq.com/keys) (starts with `gsk_`) or xAI [https://console.x.ai/](https://console.x.ai/) (starts with `xai-`).\n2. Open your `.env` file and update your key:\n   ```env\n   GROK_API_KEY=your_new_key_here\n   ```\n3. Restart the server or update it on Render dashboard."
         return f"[HTTP Error {e.code}: {body}]"
     except Exception as e:
         return f"[Connection Error: {e}]"
