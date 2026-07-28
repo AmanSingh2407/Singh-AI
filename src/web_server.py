@@ -192,6 +192,8 @@ class AgentRequestHandler(BaseHTTPRequestHandler):
                 api_key = openrouter_key or grok_key
                 provider = "Not configured"
             
+            key_preview = f"{api_key[:8]}...{api_key[-4:]}" if len(api_key) > 12 else ("Configured" if api_key else "Missing")
+
             data = {
                 "status": "online",
                 "has_key": bool(api_key),
