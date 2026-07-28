@@ -10,14 +10,23 @@ def query_grok(prompt: str, model: str | None = None, system_prompt: str | None 
     openrouter_key = (os.environ.get("OPENROUTER_API_KEY") or "").strip()
     grok_key = (os.environ.get("GROK_API_KEY") or os.environ.get("XAI_API_KEY") or os.environ.get("GROQ_API_KEY") or "").strip()
 
-    if openrouter_key.startswith("sk-or-v1-"):
+    # Prioritize OpenRouter key if present
+    if openrouter_key:
         api_key = openrouter_key
+        url = "https://openrouter.ai/api/v1/chat/completions"
+        is_openrouter = True
     elif grok_key.startswith("sk-or-v1-"):
         api_key = grok_key
-    elif openrouter_key:
-        api_key = openrouter_key
+        url = "https://openrouter.ai/api/v1/chat/completions"
+        is_openrouter = True
+    elif grok_key.startswith("gsk_"):
+        api_key = grok_key
+        url = "https://api.groq.com/openai/v1/chat/completions"
+        is_openrouter = False
     elif grok_key:
         api_key = grok_key
+        url = "https://api.x.ai/v1/chat/completions"
+        is_openrouter = False
     else:
         return "[Error: Neither OPENROUTER_API_KEY nor GROK_API_KEY is configured]"
 
@@ -27,8 +36,7 @@ def query_grok(prompt: str, model: str | None = None, system_prompt: str | None 
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
     }
 
-    if api_key.startswith("sk-or-v1-") or "OPENROUTER_API_KEY" in os.environ:
-        url = "https://openrouter.ai/api/v1/chat/completions"
+    if is_openrouter:
         headers["HTTP-Referer"] = "https://singh-ai.onrender.com"
         headers["X-Title"] = "Singh AI"
         
@@ -41,10 +49,8 @@ def query_grok(prompt: str, model: str | None = None, system_prompt: str | None 
         }
         use_model = model_map.get(model, "meta-llama/llama-3.3-70b-instruct")
     elif api_key.startswith("gsk_"):
-        url = "https://api.groq.com/openai/v1/chat/completions"
         use_model = model or "llama-3.3-70b-versatile"
     else:
-        url = "https://api.x.ai/v1/chat/completions"
         use_model = model or "grok-2"
 
     sys_msg = system_prompt or "You are an expert AI coding assistant. Provide clean, correct, and fully working code with clear explanations."
