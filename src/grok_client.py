@@ -7,14 +7,19 @@ import urllib.request
 
 
 def query_grok(prompt: str, model: str | None = None, system_prompt: str | None = None) -> str:
-    api_key = (
-        os.environ.get("OPENROUTER_API_KEY")
-        or os.environ.get("GROK_API_KEY")
-        or os.environ.get("XAI_API_KEY")
-        or os.environ.get("GROQ_API_KEY")
-    )
-    if not api_key:
-        return "[Error: OPENROUTER_API_KEY or GROK_API_KEY is not set in environment or .env file]"
+    openrouter_key = (os.environ.get("OPENROUTER_API_KEY") or "").strip()
+    grok_key = (os.environ.get("GROK_API_KEY") or os.environ.get("XAI_API_KEY") or os.environ.get("GROQ_API_KEY") or "").strip()
+
+    if openrouter_key.startswith("sk-or-v1-"):
+        api_key = openrouter_key
+    elif grok_key.startswith("sk-or-v1-"):
+        api_key = grok_key
+    elif openrouter_key:
+        api_key = openrouter_key
+    elif grok_key:
+        api_key = grok_key
+    else:
+        return "[Error: Neither OPENROUTER_API_KEY nor GROK_API_KEY is configured]"
 
     headers = {
         "Authorization": f"Bearer {api_key}",

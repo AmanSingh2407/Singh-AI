@@ -176,21 +176,20 @@ class AgentRequestHandler(BaseHTTPRequestHandler):
 
         if path == "/api/status":
             run_setup()
-            api_key = (
-                os.environ.get("OPENROUTER_API_KEY")
-                or os.environ.get("GROK_API_KEY")
-                or os.environ.get("XAI_API_KEY")
-                or os.environ.get("GROQ_API_KEY")
-                or ""
-            )
-            key_preview = f"{api_key[:8]}...{api_key[-4:]}" if len(api_key) > 12 else ("Configured" if api_key else "Missing")
-            if api_key.startswith("sk-or-v1-"):
+            openrouter_key = (os.environ.get("OPENROUTER_API_KEY") or "").strip()
+            grok_key = (os.environ.get("GROK_API_KEY") or os.environ.get("XAI_API_KEY") or os.environ.get("GROQ_API_KEY") or "").strip()
+
+            if openrouter_key.startswith("sk-or-v1-") or grok_key.startswith("sk-or-v1-"):
+                api_key = openrouter_key if openrouter_key.startswith("sk-or-v1-") else grok_key
                 provider = "OpenRouter (Universal AI)"
-            elif api_key.startswith("gsk_"):
+            elif grok_key.startswith("gsk_"):
+                api_key = grok_key
                 provider = "Groq Cloud"
-            elif api_key.startswith("xai-"):
+            elif grok_key.startswith("xai-"):
+                api_key = grok_key
                 provider = "xAI (Grok)"
             else:
+                api_key = openrouter_key or grok_key
                 provider = "Not configured"
             
             data = {
